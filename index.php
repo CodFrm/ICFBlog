@@ -1,16 +1,17 @@
 <?php
+
 /**
  *============================
  * author:Farmer
- * time:2017年1月4日 下午7:23:57
+ * time:2017年2月2日 下午12:05:33
  * blog:blog.icodef.com
- * function:入口文件
+ * function:
  *============================
  */
-
 define('__ROOT_',__DIR__);
 define('__MODEL_','index');
 define('__APP_','app');
 require_once __ROOT_.'/icf/loader.php';
 __ROOT_.'\\'.icf\index::Init();
 
+ 

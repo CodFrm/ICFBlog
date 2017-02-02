@@ -35,12 +35,12 @@ $_model = array ();
  * 
  * @author Farmer
  * @param string $table        	
- * @return \icf\lib\model()
+ * @return \icf\lib\db()
  */
 function DB($table = '') {
-	$DB = M ();
 	if (! empty ( $table )) {
-		return $DB->getDBObject ( $table );
+		$db=new \icf\lib\db();
+		return $db->getDBObject($table);
 	}
 	return $DB;
 }
@@ -51,12 +51,9 @@ function DB($table = '') {
  * @param string $table        	
  * @return \icf\lib\model()
  */
-function M($table = '') {
+function M() {
 	if (! G ( 'model' )) {
 		G ( 'model', new \icf\lib\model () );
-	}
-	if (! empty ( $table )) {
-		return G ( 'model' )->getDBObject ( $table );
 	}
 	return G ( 'model' );
 }
@@ -131,3 +128,12 @@ function outmsg($msg) {
 		echo '</pre>';
 	}
 } 
+/**
+* 获取文件url
+* @author Farmer
+* @param 
+* @return 
+*/
+function url($path='') {
+	;
+}

@@ -42,7 +42,11 @@ class view {
 		if($filename===''){
 			$filename=input('action').'.'.input('config.TPL_SUFFIX');
 		}
-		$path = __ROOT_ . '/app/' . __MODEL_ . '/tpl/'.input('ctrl').'/' . $filename;
+		if(strpos($filename,'/')==FALSE ){
+			$path = __ROOT_ . '/app/' . __MODEL_ . '/tpl/'.input('ctrl').'/' . $filename;
+		}else{
+			$path = __ROOT_ . '/app/' . __MODEL_ . '/tpl/'. $filename;
+		}
 		if (! file_exists ( $path )) {
 			echo '</br>load error';
 			return false;
@@ -62,13 +66,12 @@ class view {
 	 */
 	private function fetch($path, $cache) {
 		$fileData = file_get_contents ( $path );
-		if (! file_exists ( $cache ) || filemtime ( $path ) > filemtime ( $cache )) {
+		if ( !file_exists ( $cache ) || filemtime ( $path ) > filemtime ( $cache )) {
 			$pattern = array (
 					'/\{(\$[a-zA-Z0-9\[\]\']+)\}/', // 匹配{$xxx}
 					'/{while (.+)}/',
 					'/{\$(.*?) = (.*?)}/',
 					'/{\/while}/',
-					'/{(\$[a-zA-Z0-9\[\]\']+[+-]+)\}/',
 					'/{break}/',
 					'/{continue}/',
 					'/{if (.+)}/',
@@ -77,15 +80,15 @@ class view {
 					'/{else}/' ,
 					'/{foreach (.+)}/',
 					'/{\/foreach}/',
-					'/{(.+)}/',
-					'/__PUBLIC__/'
+					"/{include '(.+)'}/",
+					'/{(\$[a-zA-Z0-9\[\]\']+[+-]+)\}/',
+					'/{([^"^\r]+)}/'
 			);
 			$replace = array (
 					'<?php echo ${1};?>',
 					'<?php while(${1}):?>',
 					'<?php \$${1}=${2};?>',
 					'<?php endwhile;?>',
-					'<?php ${1};?>',
 					'<?php break;?>',
 					'<?php continue;?>',
 					'<?php if(${1}):?>',
@@ -94,14 +97,24 @@ class view {
 					'<?php else:?>' ,
 					'<?php foreach(${1}):?>',
 					'<?php endforeach;?>',
-					'<?php echo ${1}?>',
-					input('config.PUBLIC')
+					'<?php V()->display("${1}");?>',
+					'<?php ${1};?>',
+					'<?php echo ${1};?>'
 			);
 			$cacheData = preg_replace ( $pattern, $replace, $fileData );
 			file_put_contents ( $cache, $cacheData );
 		} else {
 			$cacheData = file_get_contents ( $cache );
 		}
+		$pattern = array (
+				'/__PUBLIC__/',
+				'/__HOME__/'
+		);
+		$replace = array (
+				input('config.PUBLIC'),
+				__HOME_
+		);
+		$cacheData = preg_replace ( $pattern, $replace, $cacheData );
 		preg_match_all ( '/\{\$([a-zA-Z0-9]+)\}/', $fileData, $tmp );
 		for($i = 0; $i < sizeof ( $tmp [1] ); $i ++) {
 			if (! isset ( $this->tplValues [$tmp [1] [$i]] )) {

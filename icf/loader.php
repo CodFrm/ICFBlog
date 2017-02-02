@@ -9,10 +9,14 @@
  */
 spl_autoload_register ( 'Loader::loadClass' );
 class loader {
-	private $fileArray=array();
+	static $fileArray=array();
+	static $system=[__APP_,'icf'];
 	static function loadClass($ClassName) {
-		if (!isset($fileArray [$ClassName])) {
-			$fileArray[$ClassName]=1;
+		if (!isset(loader::$fileArray [$ClassName])) {
+			if(!in_array(substr($ClassName,0,3),loader::$system)){
+				$ClassName='icf\\lib\\'.$ClassName;
+			}
+			loader::$fileArray[$ClassName]=1;
 			$ClassName=str_replace('\\','/',$ClassName);
 			require_once __ROOT_.'/'.$ClassName . '.php';
 		}

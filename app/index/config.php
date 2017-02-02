@@ -10,6 +10,7 @@
  */
 return array (
 		'ROUTE_RULE' => [ 
-				'{y}/{m}/{d}/{id}' => 'article->index' 
+				'{y}/{m}/{d}/{id}' => 'article->index' ,
+				'sort/{sort}'=>'index->sort'
 		] 
 );

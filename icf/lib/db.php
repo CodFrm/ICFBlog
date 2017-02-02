@@ -18,7 +18,7 @@ namespace icf\lib;
  */
 class db {
 	// 数据库操作对象
-	private $db;
+	static $db;
 	// 操作的表
 	private $table;
 	//解析出来的表
@@ -28,13 +28,10 @@ class db {
 			'or',
 			'and'
 	);
-	function __construct() {
+	static function init() {
 		if (input('config.__DB_') == 'mysql') {
-			$this->db = new \icf\lib\db\mysql ( input('config.DB_SERVER'), input('config.DB_USER'), input('config.DB_PWD'), input('config.DB_DATABASE') );
+			db::$db= new \icf\lib\db\mysql ( input('config.DB_SERVER'), input('config.DB_USER'), input('config.DB_PWD'), input('config.DB_DATABASE') );
 		}
-	}
-	function __destruct() {
-		unset ( $this->db );
 	}
 	public function getDBObject($table = '') {
 		$this->table = input('config.DB_PREFIX') . str_replace ( '|', ',' .  input('config.DB_PREFIX') , $table );
@@ -43,11 +40,11 @@ class db {
 		return $this;
 	}
 	public function __call($func, $arguments) {
-		if (is_null ( $this->db )) {
+		if (is_null ( db::$db )) {
 			return 0;
 		}
 		return call_user_func_array ( array (
-				$this->db,
+				db::$db,
 				$func 
 		), $arguments );
 	}
@@ -100,6 +97,9 @@ class db {
 		$logical='';
 		$subscript=0;
 		foreach ( $where as $key => $value ) {
+			if($value==''){
+				continue;
+			}
 			if (is_array ( $value )) {
 				$arrsize = sizeof ( $value );
 				$isarr = is_array ( $value [0] );
@@ -132,7 +132,7 @@ class db {
 			}else if(is_numeric($key)){
 				$sql.=($subscript++==0?'where ':' and ').$value.' ';
 			} else if(substr($key,0,2)=='__'){
-				$sql.=substr($key,2).' '.$value.' ';
+				$sql.=' '.substr($key,2).' '.$value.' ';
 			}else{
 				$sql.=($subscript++==0?'where ':' and ').$key.' = ' .$this->parseValue ( $value);
 			}
@@ -194,7 +194,6 @@ class db {
 		}else if (is_array ( $where ) ) {
 			$sql .= $this->where ( $where );
 		}
-		echo $sql;
 		return $this->exec ( $sql );
 	}
 	/**

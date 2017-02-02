@@ -1,0 +1,37 @@
+@charset "UTF-8";
+
+.article-detail {
+  background-color: rgba(51, 51, 51, .9);
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.article-detail .title {
+  margin: 0;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #666;
+}
+
+.article-detail .info {
+  padding: 5px;
+  color: #CCC;
+}
+
+.article-detail .body {
+  padding-top: 30px;
+  font-size: 14px;
+  font-weight: bolder;
+}
+
+.article-detail .body img {
+  max-width: 100%;
+  max-height: 300px;
+}
+
+@media (max-width:600px) {
+  .article-detail .info > p {
+    display: inline-block;
+    width: 100%;
+  }
+
+}

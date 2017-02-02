@@ -72,15 +72,16 @@ class route {
 	* @return bool
 	*/
 	static private function loadCtrlAction($ctrl,$action,$pattern=0,$oldPattern=0) {
-		$className = __APP_ . '\\' . __MODEL_ . '\\ctrl\\' . $ctrl;
+		$className = __APP_ . '/' . __MODEL_ . '/ctrl/' . $ctrl;
 		if (file_exists ( $className . '.php' )) {
-			$comPath = __APP_ . '\\' . __MODEL_ . '\\com\\';
+			$comPath = __APP_ . '/' . __MODEL_ . '/com/';
 			if (file_exists ( $comPath.'functions.php' )) {
 				include $comPath.'functions.php';
 			}
 			if(file_exists($comPath.$ctrl.'.php')){
 				include $comPath.$ctrl.'.php';
 			}
+			$className=preg_replace('/\//','\\',$className);
 			$Object = new $className ();
 			if (method_exists ( $Object, $action )) {
 				if($pattern){
@@ -134,8 +135,6 @@ class route {
 			}
 		} else {
 			$ctrl=input ( input ( 'config.CTRL' ) )?:'index';
-			$className = __APP_ . '\\' . __MODEL_ . '\\ctrl\\' .$ctrl;
-			$comName = __APP_ . '\\' . __MODEL_ . '\\com\\functions.php';
 			$action = input ( input ( 'config.ACTION' ) )?:'index';
 			if (!route::loadCtrlAction($ctrl,$action)) {
 				echo '404';

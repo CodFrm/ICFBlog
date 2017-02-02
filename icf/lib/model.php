@@ -20,7 +20,7 @@ class model {
 	private $db=null;
 	private $con=0;
 	public function __construct(){
-		$this->db=new \icf\lib\db();
+		\icf\lib\db::init();
 	}
 	public function __call($func, $arguments){
 		if(is_null($this->db)){

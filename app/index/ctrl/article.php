@@ -9,6 +9,7 @@
  *============================
  */
  namespace app\index\ctrl;
+
  /** 
  * 文章控制类
  * @author Farmer
@@ -18,7 +19,9 @@
  	function index() {
  		if(input('get.id')){
  			$record=DB('article')->select(['id'=>input('get.id')]);
- 			print_r($record->fetch());
+ 			$view=V();
+ 			$view->assign('article',$record->fetch());
+ 			$view->display();
  		}else{
  			echo 'not find';
  		}
