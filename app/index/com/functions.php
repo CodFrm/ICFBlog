@@ -21,12 +21,12 @@ function getSection($content) {
 	$content = preg_replace ( [ 
 			'/(#+)/',
 			'/(>)/',
-			'/(`+)/' ,
+			'/(`+)/',
 			'/\[/',
 			'/\]/',
-			'/\(.+\)/'
+			'/\(.+\)/' 
 	], '', $content );
-	return mb_substr ( $content, 0, 200, 'utf8' ).'....';
+	return mb_substr ( $content, 0, 200, 'utf8' ) . '....';
 }
 /**
  * 获取导航条
@@ -48,27 +48,31 @@ function getNavibar($id = 0) {
 	return $navibar;
 }
 /**
-* 
-* @author Farmer
-* @param 
-* @return 
-*/
+ *
+ * @author Farmer
+ * @param        	
+ *
+ * @return
+ *
+ */
 function getSortId($alias) {
-	if($alias==''){
+	if ($alias == '') {
 		return '';
 	}
-	return DB('sortlist')->select(['alias'=>$alias],'id')->fetch()[0];
+	return DB ( 'sortlist' )->select ( [ 
+			'alias' => $alias 
+	], 'id' )->fetch ()[0];
 }
 /**
  * 获取文章列表
  *
  * @author Farmer
- * @param string $sort
+ * @param string $sort        	
  * @return array
  */
-function getArticle($sort='') {
+function getArticle($sort = '') {
 	$rec = DB ( 'article' )->select ( [ 
-			'sortid'=>getSortId($sort),
+			'sortid' => getSortId ( $sort ),
 			'__order by' => 'time desc',
 			'__limit' => '10' 
 	] );
@@ -94,8 +98,14 @@ $load_lang = array ();
  *
  */
 function dealwithContent($text) {
+	$text = preg_replace_callback ( '/\\[(.+)\\]\\((.+)\\)/', function ($match) { // 对图片和链接处理
+		if (strpos ( $match [2], 'http' ) !== 0) {
+			$match [2] = __HOME_ . '/' . $match [2];
+		}
+		return '[' . $match [1] . '](' . $match [2] . ')';
+	}, $text );
 	$text = Markdown::defaultTransform ( $text );
-	return preg_replace_callback ( '/<code>([\s\S]*?)<\/code>/', function ($match) { // 对代码处理
+	$text = preg_replace_callback ( '/<code>([\s\S]*?)<\/code>/', function ($match) { // 对代码处理
 		global $lang_pro;
 		global $load_lang;
 		$lang = substr ( $match [1], 0, strpos ( $match [1], "\n" ) ) ?  : 'html';
@@ -108,38 +118,56 @@ function dealwithContent($text) {
 		}
 		return '<pre class="brush: ' . $lang . ';">' . $match [1] . '</pre>';
 	}, $text );
+	return $text;
 }
 /**
-* 获取配置值
-* @author Farmer
-* @param string $key
-* @return array
-*/
+ * 获取配置值
+ * 
+ * @author Farmer
+ * @param string $key        	
+ * @return array
+ *
+ */
 function getConfig($key) {
-	 return DB('config')->select(['`key`'=>$key])->fetch();
+	return DB ( 'config' )->select ( [ 
+			'`key`' => $key 
+	] )->fetch ();
 }
 /**
  * 获取有图片的文章
+ * 
  * @author Farmer
  * @return array
  */
-function getCarousel(){
-	$row=DB('article')->select([	'content'=>['!\\\\[.+\\\\]\\\\(.+\\\\)','regexp'],'__limit' => '8' ])->fetchAll();
-	foreach ($row as $key => $value) {
-		$row[$key]['img']=getArticleFirstImg($value['content']);
+function getCarousel() {
+	$row = DB ( 'article' )->select ( [ 
+			'content' => [ 
+					'!\\\\[.+\\\\]\\\\(.+\\\\)',
+					'regexp' 
+			],
+			'__limit' => '8' 
+	] )->fetchAll ();
+	foreach ( $row as $key => $value ) {
+		$row [$key] ['img'] = getArticleFirstImg ( $value ['content'] );
 	}
 	return $row;
 }
 /**
-* 获取文章的第一张图片
-* @author Farmer
-* @param string $text
-* @return string
-*/
+ * 获取文章的第一张图片
+ * 
+ * @author Farmer
+ * @param string $text        	
+ * @return string
+ *
+ */
 function getArticleFirstImg($text) {
-	preg_match('/!\\[[\d\w]+\\]\\(([\d\w\.\/:-]+)\\)/',$text,$matches);
-	if(isset($matches[1])){
-		return $matches[1];
+	preg_match ( '/!\\[[\d\w]+\\]\\(([\d\w\.\/:-]+)\\)/', $text, $matches );
+	if (isset ( $matches [1] )) {
+		if (strpos ( $matches [1], 'http' ) === 0) {
+			return $matches [1];
+		} else {
+			return __HOME_ . '/' . $matches [1];
+		}
 	}
 	return '';
 }

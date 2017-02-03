@@ -19,10 +19,11 @@ if (input('config.__DEBUG_')) {
 	error_reporting ( E_ALL ^ E_NOTICE ^ E_WARNING );
 }
 if(isset($_SERVER['PATH_INFO'])){
-	define('__HOME_',str_replace($_SERVER['PATH_INFO'],'',$_SERVER['REQUEST_URI']));
+	$home=str_replace($_SERVER['PATH_INFO'],'',$_SERVER['REQUEST_URI']);
 }else{
-	define('__HOME_',substr ($_SERVER['REQUEST_URI'],0,strlen($_SERVER['REQUEST_URI'])-1));
+	$home=substr ($_SERVER['REQUEST_URI'],0,strlen($_SERVER['REQUEST_URI'])-1);
 }
+define('__HOME_',$_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$home);
 class index {
 	static function init() {
 		G('get',$_GET);
