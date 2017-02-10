@@ -18,7 +18,9 @@ class loader {
 			}
 			loader::$fileArray[$ClassName]=1;
 			$ClassName=str_replace('\\','/',$ClassName);
-			require_once __ROOT_.'/'.$ClassName . '.php';
+			if(file_exists(__ROOT_.'/'.$ClassName . '.php')){
+				require_once __ROOT_.'/'.$ClassName . '.php';
+			}
 		}
 	}
 }

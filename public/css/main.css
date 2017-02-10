@@ -24,15 +24,6 @@ p {
     background-color: rgba(0, 0, 0, .4);
 }
 
-/* #head {
-    height: 200px;
-    padding: 0;
-}
-
-#bottom {
-    background-color: #ffd;
-    height: 100px;
-} */
 header.header {
     margin-bottom: 15px;
 }
@@ -197,6 +188,10 @@ header.header .title p {
     overflow: hidden;
     max-height: 115px;
 }
+.body > .desc > a{
+    color: #FFFFFF;
+    text-decoration: none;
+}
 .body .time{
     position: absolute;
     width: initial;
@@ -222,7 +217,9 @@ header.header .title p {
 .article .title:hover {
     color: red;
 }
-
+.page{
+    text-align: center;
+}
 @media (max-width: 600px) {
     .wrapper {
         width: 100%;
@@ -264,4 +261,32 @@ header.header .title p {
     .body > p.desc {
         max-height: 20px;
     }
+}
+.page .tab{
+    display: inline-block;
+    padding-left: 0;
+    padding: 0px;
+    margin: 10px 0;
+    border: 2px solid #686666;
+    border-radius: 4px;
+}
+.page .tab > li{
+    display: inline;
+}
+.page .tab >li > a{
+    color: #A29D9D;
+    float: left;
+    background-color: rgba(51, 51, 51, .9);
+    padding:6px 12px;
+    border-right: 1px solid #686666;
+    text-decoration: none;
+}
+.page .tab > li > a:hover{
+    background-color: rgba(2, 2, 2, 0.9);
+}
+.page .tab .right{
+    border: 0px;
+}
+.page .tab a.now{
+    background-color: rgba(104, 99, 99, 0.9);
 }

@@ -42,6 +42,17 @@ class record {
 	public function count() {
 		return mysqli_num_rows($this->result);
 	}
+	/**
+	* 返回上次查询全部数据条数
+	* 如果想获取全部的,在$field中加入sql_calc_found_rows
+	* @access public
+	* @author Farmer
+	* @return int
+	*/
+	public function countAll() {
+		$rec=DB('t')->query('select FOUND_ROWS()');
+		return $rec->fetch()[0];
+	}
 }
 class mysql {
 	protected $con;

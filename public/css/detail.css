@@ -26,7 +26,12 @@
   max-width: 100%;
   max-height: 300px;
 }
-
+span{
+	color:#FFF;
+}
+p{
+	color:#FFF;
+}
 @media (max-width:600px) {
   .article-detail .info > p {
     display: inline-block;

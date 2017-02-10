@@ -48,7 +48,7 @@ function getNavibar($id = 0) {
 	return $navibar;
 }
 /**
- *
+ * 获取导航条id
  * @author Farmer
  * @param        	
  *
@@ -70,12 +70,39 @@ function getSortId($alias) {
  * @param string $sort        	
  * @return array
  */
-function getArticle($sort = '') {
+function getArticle($sort = '',&$page=1) {
 	$rec = DB ( 'article' )->select ( [ 
 			'sortid' => getSortId ( $sort ),
 			'__order by' => 'time desc',
-			'__limit' => '10' 
+			'__limit' => (($page-1)*10).',10' 
+	],'sql_calc_found_rows *' );
+	$page=ceil($rec->countAll()/10);
+	return $rec->fetchAll ();
+}
+
+/**
+ * 搜索文章
+ * 
+ * @author Farmer
+ * @param string $keyword        	
+ * @return array
+ *
+ */
+function searchArticle($keyword='',&$page=1) {
+	$rec = DB ( 'article' )->select ( [ 
+			'title' => [ 
+					"%$keyword%",
+					'like' ,
+					'or' 
+			],
+			'content' => [ 
+					"%$keyword%",
+					'like'
+			] ,
+			'__order by' => 'time desc',
+			'__limit' => (($page-1)*10).',10' 
 	] );
+	$page=ceil($rec->countAll()/10);
 	return $rec->fetchAll ();
 }
 global $lang_pro;
@@ -122,7 +149,7 @@ function dealwithContent($text) {
 }
 /**
  * 获取配置值
- * 
+ *
  * @author Farmer
  * @param string $key        	
  * @return array
@@ -135,7 +162,7 @@ function getConfig($key) {
 }
 /**
  * 获取有图片的文章
- * 
+ *
  * @author Farmer
  * @return array
  */
@@ -154,7 +181,7 @@ function getCarousel() {
 }
 /**
  * 获取文章的第一张图片
- * 
+ *
  * @author Farmer
  * @param string $text        	
  * @return string
@@ -170,4 +197,7 @@ function getArticleFirstImg($text) {
 		}
 	}
 	return '';
+}
+function jsonEncode($str) {
+	return json_encode ( $str, JSON_UNESCAPED_UNICODE );
 }

@@ -30,7 +30,7 @@ return array (
 		'ROUTE_RULE' => [ 
 				'route' => 'route_test',
 				'{s}/{s}'=>'${1}->${2}',
-				'{s}'=>'${1}->index'
+				'{s}'=>__MODEL_.'->${1}'
 		] ,
 		//公共目录
 		'PUBLIC'=>'public'

@@ -4,8 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title><?php if(input('ctrl')=='article'):?>
-<?php echo $article['title'];?>
-    <?php else:?>
+<?php echo $article['title'];?><?php else:?>
 <?php echo getConfig('title')['value'];?>
 <?php endif;?> | <?php echo getConfig('subtitle')['value'];?></title>
     <link rel="stylesheet" type="text/css" href="__HOME__/__PUBLIC__/css/normalize.css" />
@@ -42,8 +41,8 @@
             		<?php endif;?>
             	<?php endforeach;?>
                 <div class="right item input">
-                    <form class="search">
-                        <input type="text" class="form-control" name="keyword" placeholder="请输入搜索内容..."></input>
+                    <form action="__HOME__/search" class="search">
+                        <input type="text" class="form-control" value="<?php echo input('get.keydown');?>" name="keyword" placeholder="请输入搜索内容..."></input>
                         <button class="btn btn-primary">搜索</button>
                     </form>
                 </div>

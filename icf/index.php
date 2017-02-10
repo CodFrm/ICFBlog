@@ -10,7 +10,11 @@
  */
 namespace icf;
 include 'functions.php';
-$config=array_merge( include 'config.php',include __APP_ . '/' . __MODEL_ . '/config.php' );
+if(file_exists(__APP_ . '/' . __MODEL_ . '/config.php')){
+	$config=array_merge_recursive( include 'config.php',include __APP_ . '/' . __MODEL_ . '/config.php' );
+}else{
+	$config=include 'config.php';
+}
 G('config',$config);
 if (input('config.__DEBUG_')) {
 	error_reporting ( E_ALL );
@@ -19,9 +23,13 @@ if (input('config.__DEBUG_')) {
 	error_reporting ( E_ALL ^ E_NOTICE ^ E_WARNING );
 }
 if(isset($_SERVER['PATH_INFO'])){
-	$home=str_replace($_SERVER['PATH_INFO'],'',$_SERVER['REQUEST_URI']);
+	if(!empty($_SERVER['QUERY_STRING'])){
+		$home=str_replace($_SERVER['PATH_INFO'],'',substr($_SERVER['REQUEST_URI'],0,strrpos($_SERVER['REQUEST_URI'],'?')));
+	}else{
+		$home=str_replace($_SERVER['PATH_INFO'],'',$_SERVER['REQUEST_URI']);
+	}
 }else{
-	$home=substr ($_SERVER['REQUEST_URI'],0,strlen($_SERVER['REQUEST_URI'])-1);
+	$home=substr ($_SERVER['REQUEST_URI'],0,strrpos($_SERVER['REQUEST_URI'],'/'));
 }
 define('__HOME_',$_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$home);
 class index {
