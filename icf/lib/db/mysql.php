@@ -30,7 +30,11 @@ class record {
 	* @return array
 	*/
 	public function fetchAll() {
-		return mysqli_fetch_all($this->result,MYSQLI_BOTH);
+		$rows=array();
+		while ($row=mysqli_fetch_array($this->result)){
+			$rows[]=$row;
+		}
+		return $rows;
 	}
 	/**
 	 * 返回上次查询得到的数据条数

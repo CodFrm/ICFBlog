@@ -288,5 +288,6 @@ header.header .title p {
     border: 0px;
 }
 .page .tab a.now{
+    pointer-events: none;
     background-color: rgba(104, 99, 99, 0.9);
 }

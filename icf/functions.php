@@ -38,11 +38,11 @@ $_model = array ();
  * @return \icf\lib\db()
  */
 function DB($table = '') {
+	$db=new \icf\lib\db();
 	if (! empty ( $table )) {
-		$db=new \icf\lib\db();
 		return $db->getDBObject($table);
 	}
-	return $DB;
+	return $db;
 }
 /**
  * 实例化一个没有模型文件的Model

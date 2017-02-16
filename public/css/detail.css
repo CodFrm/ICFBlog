@@ -29,8 +29,15 @@
 span{
 	color:#FFF;
 }
+blockquote{
+	font-style: oblique;
+}
+.article-detail .body{
+	padding:0px;
+}
 p{
 	color:#FFF;
+	padding:5px;
 }
 @media (max-width:600px) {
   .article-detail .info > p {

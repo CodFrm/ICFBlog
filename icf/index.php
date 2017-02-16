@@ -38,6 +38,7 @@ class index {
 		G('post',$_POST);
 		G('cookie',$_COOKIE);
 		G('server',$_SERVER);
+		date_default_timezone_set('Asia/Shanghai');
 		M();
 		lib\route::add(input('config.ROUTE_RULE'));
 		lib\route::analyze();

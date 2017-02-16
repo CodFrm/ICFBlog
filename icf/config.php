@@ -15,7 +15,6 @@ return array (
 		'DB_DATABASE' => 'icf',
 		'DB_SERVER' => 'localhost',
 		'DB_PREFIX' => 'icf_',
-		'USER_PWD' => 'sjDvegBGgtj#7e',
 		// 数据库引擎
 		'__DB_' => 'mysql',
 		// 调试模式
@@ -27,10 +26,10 @@ return array (
 		//默认控制器变量
 		'CTRL'=>'get.ctrl',
 		// 路由规则
-		'ROUTE_RULE' => [ 
-				'route' => 'route_test',
-				'{s}/{s}'=>'${1}->${2}',
-				'{s}'=>__MODEL_.'->${1}'
+		'ROUTE_RULE' => [
+				'{s}/{s}/{s}'=>'${1}->${2}->${3}',//模块->控制器->操作
+				'{s}/{s}'=>'${1}->${2}',//默认模块->控制器->操作
+				'{s}'=>'index->${1}'//默认模块->默认控制器->操作
 		] ,
 		//公共目录
 		'PUBLIC'=>'public'

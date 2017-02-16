@@ -188,7 +188,7 @@ function getCarousel() {
  *
  */
 function getArticleFirstImg($text) {
-	preg_match ( '/!\\[[\d\w]+\\]\\(([\d\w\.\/:-]+)\\)/', $text, $matches );
+	preg_match ( '/!\\[[\S]+\\]\\(([\S]+)\\)/', $text, $matches );
 	if (isset ( $matches [1] )) {
 		if (strpos ( $matches [1], 'http' ) === 0) {
 			return $matches [1];

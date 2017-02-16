@@ -63,7 +63,7 @@ class route {
 	}
 	/**
 	 * 加载控制器操作
-	 * 
+	 *
 	 * @access private
 	 * @author Farmer
 	 * @param string $ctrl        	
@@ -72,13 +72,13 @@ class route {
 	 * @param string $oldPattern        	
 	 * @return bool
 	 */
-	static private function loadCtrlAction($ctrl, $action, $pattern = 0, $oldPattern = 0) {
-		$className = __APP_ . '/' . __MODEL_ . '/ctrl/' . $ctrl;
+	static private function loadCtrlAction($model, $ctrl, $action, $pattern = 0, $oldPattern = 0) {
+		$className = __APP_ . '/' . $model . '/ctrl/' . $ctrl;
 		if (file_exists ( $className . '.php' )) {
 			$className = preg_replace ( '/\//', '\\', $className );
 			$Object = new $className ();
 			if (method_exists ( $Object, $action )) {
-				$comPath = __APP_ . '/' . __MODEL_ . '/com/';
+				$comPath = __APP_ . '/' . $model . '/com/';
 				if (file_exists ( $comPath . 'functions.php' )) {
 					require_once $comPath . 'functions.php';
 				}
@@ -98,23 +98,28 @@ class route {
 					}
 					G ( 'get', $_GET );
 				}
+				if(file_exists(__APP_ . '/' . $model . '/config.php')){
+					$config=array_merge_recursive( input('config'),include __APP_ . '/' . $model . '/config.php' );
+					G('config',$config);
+				}
+				G ( 'model', __MODEL_ );
 				G ( 'ctrl', $ctrl );
 				G ( 'action', $action );
-				//获取方法参数
-				$method=new \ReflectionMethod($Object,$action);
-				//参数绑定
-				$param=array();
-				foreach ($method->getParameters() as $value){
-					if(input('get.'.$value->getName())){
-						$param[]=input('get.'.$value->getName());
-					}else{
-						$param[]=$value->getDefaultValue();
+				// 获取方法参数
+				$method = new \ReflectionMethod ( $Object, $action );
+				// 参数绑定
+				$param = array ();
+				foreach ( $method->getParameters () as $value ) {
+					if (input ( 'get.' . $value->getName () )) {
+						$param [] = input ( 'get.' . $value->getName () );
+					} else {
+						$param [] = $value->getDefaultValue ();
 					}
 				}
 				call_user_func_array ( array (
 						$Object,
 						$action 
-				) ,$param);
+				), $param );
 				return true;
 			}
 		}
@@ -137,10 +142,11 @@ class route {
 						$pattern,
 						$replace 
 				] );
-				$ctrl = $arr [0];
-				$action = $arr [1];
+				$model = $arr [0];
+				$ctrl = $arr [1];
+				$action = $arr [2];
 				if ($ctrl) {
-					if (route::loadCtrlAction ( $ctrl, $action, $pattern, $oldPattern )) {
+					if (route::loadCtrlAction ( $model, $ctrl, $action, $pattern, $oldPattern )) {
 						$isSuccess = true;
 						break;
 					}
@@ -152,7 +158,7 @@ class route {
 		} else {
 			$ctrl = input ( input ( 'config.CTRL' ) ) ?  : 'index';
 			$action = input ( input ( 'config.ACTION' ) ) ?  : 'index';
-			if (! route::loadCtrlAction ( $ctrl, $action )) {
+			if (! route::loadCtrlAction ( __MODEL_, $ctrl, $action )) {
 				echo '404';
 			}
 		}
@@ -169,19 +175,26 @@ class route {
 		if ($n <= 0) {
 			return [ 
 					0,
+					0,
 					0 
 			];
 		}
 		$ctrl = 0;
 		$action = 0;
+		$model = 0;
 		if (strrpos ( $cacheData, '->' )) {
 			preg_match_all ( '/([\d\w]+)/', $cacheData, $tmp );
-			if (sizeof ( $tmp ) >= 2) {
+			if (sizeof ( $tmp [0] ) == 2) {
 				$ctrl = $tmp [0] [0];
 				$action = $tmp [0] [1];
+			} else if (sizeof ( $tmp [0] ) == 3) {
+				$model = $tmp [0] [0];
+				$ctrl = $tmp [0] [1];
+				$action = $tmp [0] [2];
 			}
 		}
 		return [ 
+				$model ?  : __MODEL_,
 				$ctrl ?  : $cacheData,
 				$action ?  : (input ( input ( 'config.ACTION' ) )) ?  : 'index' 
 		];
