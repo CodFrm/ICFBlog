@@ -43,9 +43,9 @@ class view {
 			$filename=input('action').'.'.input('config.TPL_SUFFIX');
 		}
 		if(strpos($filename,'/')==FALSE ){
-			$path = __ROOT_ . '/app/' . __MODEL_ . '/tpl/'.input('ctrl').'/' . $filename;
+			$path = __ROOT_ . '/app/' . input('model') . '/tpl/'.input('ctrl').'/' . $filename;
 		}else{
-			$path = __ROOT_ . '/app/' . __MODEL_ . '/tpl/'. $filename;
+			$path = __ROOT_ . '/app/' . input('model') . '/tpl/'. $filename;
 		}
 		if (! file_exists ( $path )) {
 			echo '</br>load error';

@@ -198,6 +198,3 @@ function getArticleFirstImg($text) {
 	}
 	return '';
 }
-function jsonEncode($str) {
-	return json_encode ( $str, JSON_UNESCAPED_UNICODE );
-}

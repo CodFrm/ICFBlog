@@ -102,7 +102,7 @@ class route {
 					$config=array_merge_recursive( input('config'),include __APP_ . '/' . $model . '/config.php' );
 					G('config',$config);
 				}
-				G ( 'model', __MODEL_ );
+				G ( 'model', $model );
 				G ( 'ctrl', $ctrl );
 				G ( 'action', $action );
 				// 获取方法参数
@@ -153,13 +153,13 @@ class route {
 				}
 			}
 			if (! $isSuccess) {
-				echo '404';
+				echo '404-1';
 			}
 		} else {
 			$ctrl = input ( input ( 'config.CTRL' ) ) ?  : 'index';
 			$action = input ( input ( 'config.ACTION' ) ) ?  : 'index';
 			if (! route::loadCtrlAction ( __MODEL_, $ctrl, $action )) {
-				echo '404';
+				echo '404-2';
 			}
 		}
 	}

@@ -137,3 +137,6 @@ function outmsg($msg) {
 function url($path='') {
 	;
 }
+function jsonEncode($str) {
+    return json_encode ( $str, JSON_UNESCAPED_UNICODE );
+}

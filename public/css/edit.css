@@ -1,0 +1,57 @@
+.edit {
+    padding: 2px;
+    float: left;
+    resize: none;
+    width: 49%;
+    left: 180px;
+    height: 95%;
+    overflow-y: scroll;
+    background-color: #f9f9f5;
+}
+
+.btn-tools {
+    height: 100%;
+    margin-left: 5px;
+    margin-top: 2px;
+}
+
+#preview {
+    overflow-y: scroll;
+    background-color: #f9f9f5;
+    float: left;
+    width: 50%;
+    height: 95%;
+}
+
+.tools {
+    height: 5%;
+}
+
+.writing {
+    height: 100%;
+}
+
+.input-link {
+    display: none;
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    width: 400px;
+}
+.input-link > .panel-heading{
+	    cursor: move;
+}
+.input-link > h3 {
+    cursor: auto;
+    user-select: none;
+}
+
+.link-add {
+    margin-top: 5px;
+    float: right;
+}
+.file-up{
+	float: right;
+    width: 60%;
+    margin: 10px;
+}
