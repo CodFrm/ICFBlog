@@ -1,33 +1,57 @@
+.tools > span {
+    display: inline;
+}
+
 .edit {
-    padding: 2px;
+    margin-left: 10px;
+    margin-bottom: 10px;
     float: left;
-    resize: none;
     width: 49%;
     left: 180px;
-    height: 95%;
-    overflow-y: scroll;
+    height: auto;
+    min-height: 84%;
     background-color: #f9f9f5;
+}
+
+.edit-title {
+    margin: 5px 10px;
+    width: 100%;
+    /*margin-bottom: 10px;*/
+}
+
+.edit-title > input {
+    width: 80%;
+    display: inline;
+}
+
+.post {}
+
+.tools {
+    width: 100%;
+    padding: 0 10px;
 }
 
 .btn-tools {
-    height: 100%;
-    margin-left: 5px;
-    margin-top: 2px;
+    font-size: 14px;
 }
 
 #preview {
-    overflow-y: scroll;
+    /*margin-right: 5px;*/
     background-color: #f9f9f5;
-    float: left;
-    width: 50%;
-    height: 95%;
+    float: right;
+    width: 49%;
+    height: auto;
+    min-height: 84%;
 }
 
-.tools {
-    height: 5%;
+.edit-left {
+    float: left;
+    width: 80%;
+    height: 100%;
 }
 
 .writing {
+    overflow-y: auto;
     height: 100%;
 }
 
@@ -38,9 +62,11 @@
     left: 25%;
     width: 400px;
 }
-.input-link > .panel-heading{
-	    cursor: move;
+
+.input-link > .panel-heading {
+    cursor: move;
 }
+
 .input-link > h3 {
     cursor: auto;
     user-select: none;
@@ -50,8 +76,23 @@
     margin-top: 5px;
     float: right;
 }
-.file-up{
-	float: right;
-    width: 60%;
-    margin: 10px;
+
+.file-up {
+    margin-top: 3px;
+    float: right;
+    width: 65%;
+}
+
+.edit-right {
+    width: 20%;
+    padding: 5px;
+    float: left;
+}
+
+.panel-body > ul > li > ul > li {
+    list-style: none;
+}
+
+.panel-body > ul > li > ul {
+    padding: 0px;
 }

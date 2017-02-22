@@ -29,6 +29,11 @@ class index {
         V()->display();
     }
 
+    /**
+     * 文件上传
+     * @access public
+     * @author Farmer
+     */
     public function fileup() {
         header('Access-Control-Allow-Origin: *');
         $json ['code'] = -2;

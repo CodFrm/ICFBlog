@@ -28,25 +28,7 @@ function getSection($content) {
 	], '', $content );
 	return mb_substr ( $content, 0, 200, 'utf8' ) . '....';
 }
-/**
- * 获取导航条
- *
- * @author Farmer
- * @param int $id        	
- * @return array
- */
-function getNavibar($id = 0) {
-	$where = array (
-			'father' => empty ( $id ) ? '-1' : $id 
-	);
-	$record = DB ( 'sortlist' )->select ( $where );
-	$navibar = array ();
-	while ( $row = $record->fetch () ) {
-		$navibar [$row ['alias']] ['title'] = $row ['title'];
-		$navibar [$row ['alias']] ['son'] = getNavibar ( $row ['id'] );
-	}
-	return $navibar;
-}
+
 /**
  * 获取导航条id
  * @author Farmer
