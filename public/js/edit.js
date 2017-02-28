@@ -3,16 +3,17 @@ var cursorTmp = 0;
 $('.edit').focus();
 cursorTmp = window.getSelection().getRangeAt(0);
 s = $('.edit')[0].childNodes;
-if(s.length - 1>=0){
-    var selection = window.getSelection();
-    range = document.createRange();
+var selection = window.getSelection();
+range = document.createRange();
+if (s.length >= 1) {
     range.setStart(s[s.length - 1], s[s.length - 1].length);
-    selection.removeAllRanges();
-    selection.addRange(range);
 }
+selection.removeAllRanges();
+selection.addRange(range);
 (function($) {
     $('.edit').blur(function() {
         cursorTmp = window.getSelection().getRangeAt(0);
+        selectText = window.getSelection().toString();
     });
     $('.bold').click(function() {
         dealText($('.edit')[0], "**");
@@ -44,18 +45,15 @@ if(s.length - 1>=0){
     $('.link-add').click(function() {
         var reg = / ".+"/;
         var isTitle = reg.test($('.link-edit').val());
-        var selectText = window.getSelection().toString();
+        // var selectText = window.getSelection().toString();
         reduction();
-        if (selectText != '') { //选中文本
-            document.execCommand('insertHTML', '', '[' + selectText + '](' + $('.link-edit').val() + ')');
-        } else {
-            if (isTitle) {
+        document.execCommand('insertHTML', '', '[' + selectText + '](' + $('.link-edit').val() + ')');
 
-            } else {
-                document.execCommand('insertHTML', '', '[](' + $('.link-edit').val() + ')');
-            }
-        }
         $('.input-link').css({ 'display': 'none' });
+    });
+    $(".edit").resize(function() {
+        alert(this.width());
+        // $(this).css("background-color", "#FFFFCC");
     });
 })(jQuery);
 
@@ -80,20 +78,18 @@ function dealText(edit, mark) {
     switch (mark) {
         case '*':
         case '**':
-            {
+        {
 
-                var selectText = window.getSelection().toString();
-                reduction();
-                if (selectText != '') {
-                    document.execCommand('insertHTML', '', mark + selectText + mark);
-                }
-                break;
+            // var selectText = window.getSelection().toString();
+            reduction();
+            if (selectText != '') {
+                document.execCommand('insertHTML', '', mark + selectText + mark);
             }
+            break;
+        }
     }
     // edit.focus();
 }
-
-
 
 //拽托图片文件上传
 $('.writing')[0].addEventListener("drop", function(e) { //拖离
@@ -116,22 +112,22 @@ box.addEventListener("drop", function(e) {
     }
     var fileurl = window.URL.createObjectURL(fileList[0]);
 
-    var selectText = window.getSelection().toString();
+    // var selectText = window.getSelection().toString();
     $('.file-up .bar').css({ 'width': '0%' });
     var formData = new FormData();
     formData.append('upfile', fileList[0]);
     var xmlHttpRequest = new XMLHttpRequest();
     xmlHttpRequest.onreadystatechange = function() {
         if (xmlHttpRequest.readyState == 4 && xmlHttpRequest.status == 200) {
-            console.log(xmlHttpRequest.responseText);
+            // console.log(xmlHttpRequest.responseText);
             var jsonObj = JSON.parse(xmlHttpRequest.responseText);
             reduction();
             if (fileList[0].type.indexOf('image') === 0) { //如果是图片
                 document.execCommand('insertHTML', '', "![" + fileList[0].name + "](" + jsonObj['filename'] + ")");
-            }else{
-                document.execCommand('insertHTML', '', "[" +  fileList[0].name  + "](" + jsonObj['filename'] + ")");
+            } else {
+                document.execCommand('insertHTML', '', "[" + fileList[0].name + "](" + jsonObj['filename'] + ")");
             }
-            
+
         }
     };
     xmlHttpRequest.upload.onprogress = function(evt) {
@@ -141,6 +137,63 @@ box.addEventListener("drop", function(e) {
     };
     xmlHttpRequest.open("post", url, true);
     xmlHttpRequest.send(formData);
-    // $('.edit')[0].focus();
-    // alert(fileurl);
 }, false);
+var isSuccess = true;
+
+function articlePost() {
+    if (isSuccess == false) {
+        alert('请稍等');
+        return false;
+    }
+    isSuccess = false;
+    var sortArr = $('.sortid');
+    var selectSortId = 0;
+    for (var i = 0; i < sortArr.length; i++) {
+        if (sortArr[i].checked) {
+            selectSortId = sortArr[i].value;
+            break;
+        }
+    }
+    var Text = document.getElementById("text-input").innerText;
+    var form = new FormData();
+    form.append('title', $('.title').val());
+    form.append('content', Text);
+    form.append('sortid', selectSortId);
+    id = $('#articleId').val();
+    form.append('id', id);
+    $.ajax({
+        url: articleUrl + '?id=' + id,
+        type: "post",
+        data: form,
+        processData: false,
+        contentType: false,
+        success: function(data) {
+            isSuccess = true;
+            var jsonObj = JSON.parse(data);
+            if (jsonObj['code'] == 1) {
+                msgShow(1, '文章id为:' + jsonObj['id'] + ' 固定链接:' + jsonObj['url']);
+                $('#articleId').val(jsonObj['id']);
+            } else {
+                msgShow(0, jsonObj['msg']);
+            }
+
+        },
+        error: function(e) {
+            isSuccess = true;
+            msgShow(0);
+        }
+    });
+    return false;
+}
+
+function msgShow(type, text) {
+    $('.text-msg').text('文章发表' + (type ? '成功' : '失败') + '!' + text);
+    $('.msg').addClass('alert-' + (type ? 'success' : 'danger'));
+    $('.msg').removeClass('alert-' + (!type ? 'success' : 'danger'));
+    $('.msg').slideToggle().end();
+    setTimeout(function() {
+        if ($('.msg').css('display') != 'nono') {
+            $('.msg').slideToggle().end();
+        }
+    }, 3000);
+}

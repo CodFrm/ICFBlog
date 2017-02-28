@@ -16,14 +16,13 @@
  * @return array
  */
 function getNavibar($id = -1) {
-    $where = array (
-        'father' => empty ( $id ) ? '-1' : $id
-    );
-    $record = DB ( 'sortlist' )->select ( $where );
-    $navibar = array ();
-    while ( $row = $record->fetch () ) {
+    $where = array('father' => empty ($id) ? '-1' : $id);
+    $record = DB('sortlist')->select($where);
+    $navibar = array();
+    while ($row = $record->fetch()) {
+        $navibar [$row['alias']]['id'] = $row['id'];
         $navibar [$row ['alias']] ['title'] = $row ['title'];
-        $navibar [$row ['alias']] ['son'] = getNavibar ( $row ['id'] );
+        $navibar [$row ['alias']] ['son'] = getNavibar($row ['id']);
     }
     return $navibar;
 }

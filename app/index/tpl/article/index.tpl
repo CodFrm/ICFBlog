@@ -13,7 +13,7 @@
             </div>
                <div class="article-detail" style="margin-top: 20px;">
 <!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="{$article['id']}" data-title="{$article['title']}" data-url="__HOME__/{date('Y/m/d',$article['time'])}/{$article['id']}"></div>
+	<div class="ds-thread" data-thread-key="{$article['articleid']}" data-title="{$article['title']}" data-url="__HOME__/{date('Y/m/d',$article['time'])}/{$article['articleid']}"></div>
 <!-- 多说评论框 end -->
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">

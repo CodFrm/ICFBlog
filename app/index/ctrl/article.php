@@ -18,7 +18,7 @@
  class article {
  	function index() {
  		if(input('get.id')){
- 			$record=DB('article')->select(['id'=>input('get.id')]);
+ 			$record=DB('article')->select(['articleid'=>input('get.id'),'type'=>1]);
  			$view=V();
  			$view->assign('article',$record->fetch());
  			$view->display();

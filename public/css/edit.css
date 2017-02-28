@@ -19,7 +19,7 @@
     /*margin-bottom: 10px;*/
 }
 
-.edit-title > input {
+.edit-title > .title {
     width: 80%;
     display: inline;
 }
@@ -84,15 +84,38 @@
 }
 
 .edit-right {
-    width: 20%;
+    position: absolute;
+    left: 80%;
+    width: 18%;
     padding: 5px;
     float: left;
 }
 
-.panel-body > ul > li > ul > li {
+.sort-list {
+    padding: 5px;
+    background: #E0E0E0;
+}
+
+.sort-list li {
     list-style: none;
 }
 
-.panel-body > ul > li > ul {
+.sort-list p {
+    margin: 0px;
+}
+
+.sort-list > ul > li > ul > li > p {
+    margin-left: 10px;
+}
+
+.sort-list ul {
     padding: 0px;
+}
+
+.msg {
+    top: 40%;
+    left: 5%;
+    position: absolute;
+    width: 70%;
+    display: none;
 }
