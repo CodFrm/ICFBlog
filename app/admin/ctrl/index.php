@@ -22,10 +22,26 @@ class index {
     }
 
     /**
-     * @access public
+     * 文章编写或者修改的页面
      * @author Farmer
      */
     public function edit() {
+        $article = array('id'=>0,'title'=>'','content'=>'','sortid'=>0);
+        $view=V();
+        if (input('get.id')) {
+            $record = DB('article')->select(['articleid' => input('get.id'), 'type' => 1]);
+            $view = V();
+            $article = $record->fetch();
+        }
+        $view->assign('article', $article);
+        $view->display();
+    }
+
+    /**
+     * 文章列表
+     * @author Farmer
+     */
+    public function article_list() {
         V()->display();
     }
 

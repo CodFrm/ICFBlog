@@ -1,0 +1,28 @@
+.content {
+    padding: 10px;
+}
+
+.article-list {}
+
+.article-list > .article-admin {
+    margin-bottom: 8px;
+    overflow: hidden;
+    border: 1px solid #cccaca;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0px 0px 20px 0px #d7d2d2;
+    width: 800px;
+}
+
+.article-list > .article-admin > .article-title{
+    font-size: 26px;
+}
+
+.article-list > .article-admin > .article-time {
+    float: right;
+}
+
+.tools {
+    overflow: hidden;
+    margin-bottom: 6px;
+}

@@ -32,3 +32,14 @@ function inMenu($action='index',$menu=[]){
     return false;
 }
 
+/**
+ * 对所需要修改的文章字符进行处理
+ * @author Farmer
+ * @param string $text
+ * @return string
+ */
+function dealEditArticle($text=''){
+//    $text='""';
+    $text= preg_replace(['/[\"]/','/[\r\n]/'], ['\"','\r\n'], $text);
+    return $text;
+}

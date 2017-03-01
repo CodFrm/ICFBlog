@@ -127,21 +127,23 @@ function outmsg($msg) {
 		print_r ( $msg );
 		echo '</pre>';
 	}
-} 
+}
+
 /**
-* 获取文件url
-* @author Farmer
-* @param string $action
-* @return string
-*/
-function url($action='') {
+ * 生成访问URL
+ * @author Farmer
+ * @param string $action
+ * @param string $param
+ * @return string
+ */
+function url($action='',$param='') {
 //    preg_match_all($pattern, '/' . preg_replace(['/{/', '/}/'], '', $oldPattern), $key);
     preg_match_all( '/([\w]+)/', $action, $arrMatch);
     $url='';
     foreach ($arrMatch[0] as $value){
         $url.=('/'.$value);
     }
-    return __HOME_.$url;
+    return __HOME_.$url.($param?('?'.$param):'');
 }
 function jsonEncode($str) {
     return json_encode ( $str, JSON_UNESCAPED_UNICODE );
