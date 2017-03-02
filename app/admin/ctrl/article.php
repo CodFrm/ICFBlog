@@ -15,9 +15,7 @@ class article {
     /**
      * 新增或者修改一篇文章
      * @author Farmer
-     * @param string $title
-     * @param string $content
-     * @param int $sortid
+     * @param int $id
      */
     public function articlePost($id = 0) {
         header("Access-Control-Allow-Origin: *");
@@ -40,6 +38,20 @@ class article {
                 $jsonMsg['msg'] = '未知错误';
                 $jsonMsg['code'] = 2;
             }
+        }
+        echo jsonEncode($jsonMsg);
+    }
+
+    /**
+     *
+     * @author Farmer
+     * @param int $id
+     */
+    public function delete($id = 0) {
+        $jsonMsg = ['code' => -1, 'msg' => '文章不存在'];
+        $change = DB('article')->update(['type' => 0], ['articleid' => $id]);
+        if ($change >= 1) {
+            $jsonMsg = ['code' => 1, 'msg' => '删除成功'];
         }
         echo jsonEncode($jsonMsg);
     }

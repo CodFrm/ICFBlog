@@ -36,6 +36,7 @@
 }
 
 #preview {
+    overflow: hidden;
     /*margin-right: 5px;*/
     background-color: #f9f9f5;
     float: right;

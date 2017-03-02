@@ -12,7 +12,6 @@
     <link rel="stylesheet" type="text/css" href="__HOME__/__PUBLIC__/css/owl.theme.default.min.css"/>
     <link rel="stylesheet" type="text/css" href="__HOME__/__PUBLIC__/css/admin.css"/>
     <link rel="stylesheet" type="text/css" href="__HOME__/__PUBLIC__/font-awesome/css/font-awesome.min.css">
-
 </head>
 
 <body>

@@ -37,11 +37,10 @@
                         <li>
                             {$values['title']}
                             {if count($values['son'])!=0}
-                                <ul>
+                                <ul class="">
                                     {foreach $values['son'] as $key=>$subValues}
                                         <li>
-                                            <p><input type="radio" class="sortid"
-                                                      value="{$subValues['id']}"/>{$subValues['title']}</p>
+                                            <p><input type="radio" class="sortid" name="sortid"{$subValues['id']==$article['sortid']?' checked=checked':''}value="{$subValues['id']}"/>{$subValues['title']}</p>
                                         </li>
                                     {/foreach}
                                 </ul>
