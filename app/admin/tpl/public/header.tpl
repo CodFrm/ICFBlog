@@ -23,12 +23,12 @@
             <ul class="nav">
                 {foreach getAdminMenu() as $key=>$values}
                     <li class="item">
-                        <a href="{$values['link']=='#'?'#':('__HOME__/admin/index/'.$values['link'])}">
+                        <a href="{if $values['link']=='#'}'#'{else}__HOME__/admin/index/{$values['link']}{/if}">
                             <i class="fa fa-caret-down icon-w"></i>
                             {$values['title']}
                             <i class="{$values['class']}"></i>
                         </a>
-                        <ul class="sub-nav{inMenu(input('action'),($sub=getAdminMenu($values['id'])))?' now':''}">
+                        <ul class="sub-nav{:inMenu(input('action'),($sub=getAdminMenu($values['id'])))?' now':''}">
                             {foreach $sub as $subKey=>$subValues}
                                 <li class="item">
                                     <a href="__HOME__/admin/index/{$subValues['link']}">

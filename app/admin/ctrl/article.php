@@ -25,7 +25,7 @@ class article {
             if ($change >= 1) {
                 $insertId = DB()->lastinsertid();
                 if ($id) {
-                    DB('article')->update(['type' => 0], ['articleid' => $id, 'type!=2']);
+                    DB('article')->update(['type' => '0'], ['articleid' => $id, 'type!=2']);
                 } else {
                     $id = $insertId;
                 }
@@ -39,7 +39,7 @@ class article {
                 $jsonMsg['code'] = 2;
             }
         }
-        echo jsonEncode($jsonMsg);
+        return json($jsonMsg);
     }
 
     /**
@@ -53,6 +53,6 @@ class article {
         if ($change >= 1) {
             $jsonMsg = ['code' => 1, 'msg' => '删除成功'];
         }
-        echo jsonEncode($jsonMsg);
+        return json($jsonMsg);
     }
 }

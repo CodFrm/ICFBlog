@@ -20,7 +20,11 @@ class route {
     // 路由规则
     private static $routeRule = array();
     // 替换规则
-    private static $replaceRule = array('{n}' => '(\d+)', '{s}' => '([\S][^\/]*)', '/' => '\/');
+    private static $replaceRule = array(
+        '{n}' => '(\d+)',
+        '{s}' => '([\S][^\/]*)',
+        '/' => '\/'
+    );
 
     /**
      * 替换规则处理
@@ -75,17 +79,24 @@ class route {
         $className = __APP_ . '/' . $model . '/ctrl/' . $ctrl;
         if (file_exists($className . '.php')) {
             $className = preg_replace('/\//', '\\', $className);
+            $comPath=__APP_.'/common.php';
+            if (file_exists($comPath )) {
+                require_once $comPath;
+            }
+            G('model', $model);
+            G('ctrl', $ctrl);
+            G('action', $action);
+            $comPath = __APP_ . '/' . $model . '/';
+            if (file_exists($comPath . 'common.php')) {
+                require_once $comPath . 'common.php';
+            }
             $Object = new $className ();
             if (method_exists($Object, $action)) {
-                $comPath = __APP_ . '/' . $model . '/com/';
-                if (file_exists($comPath . 'functions.php')) {
-                    require_once $comPath . 'functions.php';
-                }
-                if (file_exists($comPath . $ctrl . '.php')) {
-                    require_once $comPath . $ctrl . '.php';
-                }
                 if ($pattern) {
-                    preg_match_all($pattern, '/' . preg_replace(['/{/', '/}/'], '', $oldPattern), $key);
+                    preg_match_all($pattern, '/' . preg_replace([
+                            '/{/',
+                            '/}/'
+                        ], '', $oldPattern), $key);
                     preg_match_all($pattern, $_SERVER ['PATH_INFO'], $value);
                     unset ($key [0]);
                     unset ($value [0]);
@@ -98,24 +109,24 @@ class route {
                     $config = array_merge_recursive(input('config'), include __APP_ . '/' . $model . '/config.php');
                     G('config', $config);
                 }
-                if (file_exists(__APP_ . '/public/com/functions.php')) {
-                    require_once __APP_ . '/public/com/functions.php';
-                }
-                G('model', $model);
-                G('ctrl', $ctrl);
-                G('action', $action);
                 // 获取方法参数
                 $method = new \ReflectionMethod ($Object, $action);
                 // 参数绑定
                 $param = array();
                 foreach ($method->getParameters() as $value) {
-                    if (input('get.' . $value->getName())) {
+                    if (input('get.' . $value->getName())!==false) {
                         $param [] = input('get.' . $value->getName());
                     } else {
                         $param [] = $value->getDefaultValue();
                     }
                 }
-                call_user_func_array(array($Object, $action), $param);
+                if(method_exists($Object, '__init')) {
+                    call_user_func_array(array($Object, '__init'));
+                }
+                echo call_user_func_array(array(
+                    $Object,
+                    $action
+                ), $param);
                 return true;
             }
         }
@@ -135,7 +146,10 @@ class route {
             foreach (route::$routeRule as $pattern => $replace) {
                 $oldPattern = $pattern;
                 $pattern = route::replaceHandle($pattern);
-                $arr = route::routeHndle($_SERVER ['PATH_INFO'], [$pattern, $replace]);
+                $arr = route::routeHndle($_SERVER ['PATH_INFO'], [
+                    $pattern,
+                    $replace
+                ]);
                 $model = $arr [0];
                 $ctrl = $arr [1];
                 $action = $arr [2];
@@ -147,13 +161,13 @@ class route {
                 }
             }
             if (!$isSuccess) {
-                echo '404-1';
+                echo '404';
             }
         } else {
             $ctrl = input(input('config.CTRL')) ?: 'index';
             $action = input(input('config.ACTION')) ?: 'index';
             if (!route::loadCtrlAction(__MODEL_, $ctrl, $action)) {
-                echo '404-2';
+                echo '404';
             }
         }
     }
@@ -168,7 +182,11 @@ class route {
     static private function routeHndle($path, $match) {
         $cacheData = preg_replace($match [0], $match [1], $path, -1, $n);
         if ($n <= 0) {
-            return [0, 0, 0];
+            return [
+                0,
+                0,
+                0
+            ];
         }
         $ctrl = 0;
         $action = 0;
@@ -184,7 +202,11 @@ class route {
                 $action = $tmp [0] [2];
             }
         }
-        return [$model ?: __MODEL_, $ctrl ?: $cacheData, $action ?: (input(input('config.ACTION'))) ?: 'index'];
+        return [
+            $model ?: __MODEL_,
+            $ctrl ?: $cacheData,
+            $action ?: (input(input('config.ACTION'))) ?: 'index'
+        ];
     }
 }
 

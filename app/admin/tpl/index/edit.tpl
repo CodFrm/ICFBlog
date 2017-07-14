@@ -2,7 +2,7 @@
 <link rel="stylesheet" type="text/css" href="__HOME__/__PUBLIC__/css/edit.css"/>
 <form action="post-article.php" method="post" onsubmit="return false;" class="writing">
     <div class="edit-left">
-        <input type="hidden" name="id" id="articleId" value="{$article['id']?:'0'}">
+        <input type="hidden" name="id" id="articleId" value="{if $article['id']}{$article['id']}{else}0{/if}">
         <div class="alert alert-danger alert-dismissable msg">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
                 &times;
@@ -10,7 +10,7 @@
             <span class="text-msg">2333</span>
         </div>
         <div class="edit-title">
-            <input type="text" class="form-control title" placeholder="在这里输入文章的标题~" value="{$article['title']?:''}"/>
+            <input type="text" class="form-control title" placeholder="在这里输入文章的标题~" value="{if $article['title']}{$article['title']}{/if}"/>
             <input type="submit" onclick="articlePost()" value="提交文章" class="btn btn-primary btn-tools post"/>
         </div>
         <div class="tools">
@@ -40,7 +40,7 @@
                                 <ul class="">
                                     {foreach $values['son'] as $key=>$subValues}
                                         <li>
-                                            <p><input type="radio" class="sortid" name="sortid"{$subValues['id']==$article['sortid']?' checked=checked':''}value="{$subValues['id']}"/>{$subValues['title']}</p>
+                                            <p><input type="radio" class="sortid" name="sortid"{if $subValues['id']==$article['sortid']} checked=checked {/if} value="{$subValues['id']}"/>{$subValues['title']}</p>
                                         </li>
                                     {/foreach}
                                 </ul>
@@ -66,9 +66,9 @@
 </div>
 <script src="__HOME__/__PUBLIC__/js/markdown.min.js"></script>
 <script>
-    document.getElementById("text-input").innerText="{dealEditArticle($article['content']?:'')}";
-    var url = "{url('admin->index->fileup')}";
-    var articleUrl = "{url('admin->article->articlePost')}";
+    document.getElementById("text-input").innerText="{:dealEditArticle($article['content']?:'')}";
+    var url = "{:url('admin->index->fileup')}";
+    var articleUrl = "{:url('admin->article->articlePost')}";
     function Editor(input, preview) {
         this.update = function () {
             preview.innerHTML = markdown.toHTML(input.innerText);

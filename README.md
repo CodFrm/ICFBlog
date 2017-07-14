@@ -1,5 +1,7 @@
-#[ICFBlog](https://github.com/ICFTeam/ICFBlog)
-##Hello World!
+# [ICFBlog](https://github.com/ICFTeam/ICFBlog)
+
+## Hello World!
+
 终于完成得差不多了,我的新博客程序!
 
 前端是我朋友帮我做的,后端采用ICFphp框架完成,文章编写使用的MarkDown语法

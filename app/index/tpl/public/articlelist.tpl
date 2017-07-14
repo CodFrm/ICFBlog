@@ -5,9 +5,9 @@
                 	<img src="{$img}" />
                 {/if}
                 <div class="body">
-                     <p><a href="__HOME__/{date('Y/m/d',$value['time'])}/{$value['articleid']}" class="title">{$value['title']}</a></p>
-                     <p class="desc"><a href="__HOME__/{date('Y/m/d',$value['time'])}/{$value['articleid']}">{getSection($value['content'])}</a></p>
-                    <p class="time"><b>发布时间: </b>{date('Y年m月d日 H:i:s',$value['time'])}</p>
+                     <p><a href="__HOME__/{:date('Y/m/d',$value['time'])}/{$value['articleid']}" class="title">{$value['title']}</a></p>
+                     <p class="desc"><a href="__HOME__/{:date('Y/m/d',$value['time'])}/{$value['articleid']}">{:getSection($value['content'])}</a></p>
+                    <p class="time"><b>发布时间: </b>{:date('Y年m月d日 H:i:s',$value['time'])}</p>
                 </div>
             </div>
             {/foreach}

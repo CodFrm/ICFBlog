@@ -169,12 +169,11 @@ function articlePost() {
         contentType: false,
         success: function(data) {
             isSuccess = true;
-            var jsonObj = JSON.parse(data);
-            if (jsonObj['code'] == 1) {
-                msgShow(1, '文章id为:' + jsonObj['id'] + ' 固定链接:' + jsonObj['url']);
-                $('#articleId').val(jsonObj['id']);
+            if (data['code'] == 1) {
+                msgShow(1, '文章id为:' + data['id'] + ' 固定链接:' + data['url']);
+                $('#articleId').val(data['id']);
             } else {
-                msgShow(0, jsonObj['msg']);
+                msgShow(0, data['msg']);
             }
 
         },

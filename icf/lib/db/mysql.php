@@ -21,7 +21,7 @@ class record {
 	}
 	protected $result;
 	public function fetch() {
-		return mysqli_fetch_array ( $this->result );
+		return mysqli_fetch_array ( $this->result,MYSQLI_ASSOC );
 	}
 	/**
 	* 获取记录集所有数据,以数组形式返回
@@ -30,11 +30,11 @@ class record {
 	* @return array
 	*/
 	public function fetchAll() {
-		$rows=array();
-		while ($row=mysqli_fetch_array($this->result)){
-			$rows[]=$row;
-		}
-		return $rows;
+        $rows=array();
+        while ($row=mysqli_fetch_array($this->result,MYSQLI_ASSOC)){
+            $rows[]=$row;
+        }
+        return $rows;
 	}
 	/**
 	 * 返回上次查询得到的数据条数
@@ -55,7 +55,7 @@ class record {
 	*/
 	public function countAll() {
 		$rec=DB('t')->query('select FOUND_ROWS()');
-		return $rec->fetch()[0];
+		return $rec->fetch()['FOUND_ROWS()'];
 	}
 }
 class mysql {

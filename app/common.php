@@ -35,7 +35,12 @@ function getNavibar($id = -1) {
  * @return array
  */
 function getArticle($sort = '', &$page = 1) {
-    $rec = DB('article')->select(['sortid' => getSortId($sort), 'type' => 1, '__order by' => 'time desc', '__limit' => (($page - 1) * 10) . ',10'], 'sql_calc_found_rows *');
+    if (getSortId($sort)) {
+        $where = ['sortid' => getSortId($sort), 'type' => 1, '__order by' => 'time desc', '__limit' => (($page - 1) * 10) . ',10'];
+    } else {
+        $where = ['type' => 1, '__order by' => 'time desc', '__limit' => (($page - 1) * 10) . ',10'];
+    }
+    $rec = DB('article')->select($where, 'sql_calc_found_rows *');
     $page = ceil($rec->countAll() / 10);
     return $rec->fetchAll();
 }
@@ -66,5 +71,5 @@ function getSortId($alias) {
     if ($alias == '') {
         return '';
     }
-    return DB('sortlist')->select(['alias' => $alias], 'id')->fetch()[0];
+    return DB('sortlist')->select(['alias' => $alias], 'id')->fetch()['id'];
 }

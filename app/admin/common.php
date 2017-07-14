@@ -40,6 +40,6 @@ function inMenu($action='index',$menu=[]){
  */
 function dealEditArticle($text=''){
 //    $text='""';
-    $text= preg_replace(['/[\"]/','/[\r\n]/'], ['\"','\r\n'], $text);
+    $text= preg_replace(['/[\"]/','/\r\n/'], ['\"','\r\n'], $text);
     return $text;
 }

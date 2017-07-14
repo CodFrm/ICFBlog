@@ -738,7 +738,7 @@ class Markdown implements MarkdownInterface {
 			$url = $this->urls[$link_id];
 			$url = $this->encodeURLAttribute($url);
 			
-			$result = "<a href=\"$url\"";
+			$result = "<a target=\"_blank\" href=\"$url\"";
 			if ( isset( $this->titles[$link_id] ) ) {
 				$title = $this->titles[$link_id];
 				$title = $this->encodeAttribute($title);
@@ -774,7 +774,7 @@ class Markdown implements MarkdownInterface {
 
 		$url = $this->encodeURLAttribute($url);
 
-		$result = "<a href=\"$url\"";
+		$result = "<a target=\"_blank\" href=\"$url\"";
 		if (isset($title)) {
 			$title = $this->encodeAttribute($title);
 			$result .=  " title=\"$title\"";
@@ -1645,7 +1645,7 @@ class Markdown implements MarkdownInterface {
 	 */
 	protected function _doAutoLinks_url_callback($matches) {
 		$url = $this->encodeURLAttribute($matches[1], $text);
-		$link = "<a href=\"$url\">$text</a>";
+		$link = "<a target=\"_blank\" href=\"$url\">$text</a>";
 		return $this->hashPart($link);
 	}
 
@@ -1657,7 +1657,7 @@ class Markdown implements MarkdownInterface {
 	protected function _doAutoLinks_email_callback($matches) {
 		$addr = $matches[1];
 		$url = $this->encodeURLAttribute("mailto:$addr", $text);
-		$link = "<a href=\"$url\">$text</a>";
+		$link = "<a target=\"_blank\" href=\"$url\">$text</a>";
 		return $this->hashPart($link);
 	}
 

@@ -4,11 +4,11 @@
                 <h2 class="title">{$article['title']}</h2>
                 <div class="info clearfix">
                     <p class="pull-left">{$article['author']}</p>
-                    <p class="pull-right">时间: {date('Y年m月d日 H:i:s',$article['time'])}</p>
+                    <p class="pull-right">时间: {:date('Y年m月d日 H:i:s',$article['time'])}</p>
                 </div>
 
                 <div class="body">
-                    {dealwithContent($article['content'])}
+                    {:dealwithContent($article['content'])}
                 </div>
             </div>
                <div class="article-detail" style="margin-top: 20px;">

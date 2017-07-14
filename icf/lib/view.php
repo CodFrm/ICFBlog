@@ -18,13 +18,13 @@ namespace icf\lib;
  */
 class view {
 	private $tplValues = array ();
-	
+
 	/**
 	 * 设置值
 	 *
 	 * @author Farmer
-	 * @param string $param        	
-	 * @param string $value        	
+	 * @param string $param
+	 * @param string $value
 	 * @return
 	 *
 	 */
@@ -35,18 +35,22 @@ class view {
 	 * 载入编译模板文件
 	 *
 	 * @author Farmer
-	 * @param string $filename        	
+	 * @param string $filename
 	 * @return bool
 	 */
 	public function display($filename='') {
-		if($filename===''){
-			$filename=input('action').'.'.input('config.TPL_SUFFIX');
-		}
+	    if($filename===''){
+	        $filename=input('action');
+        }
 		if(strpos($filename,'/')==FALSE ){
 			$path = __ROOT_ . '/app/' . input('model') . '/tpl/'.input('ctrl').'/' . $filename;
 		}else{
-			$path = __ROOT_ . '/app/' . input('model') . '/tpl/'. $filename;
+			$path = __ROOT_ . '/app/' .  input('model')  . '/tpl/'. $filename;
 		}
+		$suffix='.'.input('config.TPL_SUFFIX');
+		if(substr($path,strlen($path)-strlen($suffix),strlen($suffix))!=$suffix){
+		    $path.=$suffix;
+        }
 		if (! file_exists ( $path )) {
 			echo '</br>load error';
 			return false;
@@ -59,8 +63,8 @@ class view {
 	 * 生成编译文件并输出
 	 *
 	 * @author Farmer
-	 * @param string $path        	
-	 * @param string $cache        	
+	 * @param string $path
+	 * @param string $cache
 	 * @return
 	 *
 	 */
@@ -69,20 +73,20 @@ class view {
 		if ( !file_exists ( $cache ) || filemtime ( $path ) > filemtime ( $cache )) {
 			$pattern = array (
 					'/\{(\$[a-zA-Z0-9\[\]\']+)\}/', // 匹配{$xxx}
-					'/{while (.+)}/',
+					'/{while (.*?)}/',
 					'/{\$(.*?) = (.*?)}/',
 					'/{\/while}/',
 					'/{break}/',
 					'/{continue}/',
-					'/{if (.+)}/',
+					'/{if (.*?)}/',
 					'/{\/if}/',
-					'/{elseif (.+)}/',
+					'/{elseif (.*?)}/',
 					'/{else}/' ,
-					'/{foreach (.+)}/',
+					'/{foreach (.*?)}/',
 					'/{\/foreach}/',
-					"/{include '(.+)'}/",
-					'/{(\$[a-zA-Z0-9\[\]\']+[+-]+)\}/',
-					'/{([^"^\r]+)}/'
+					"/{include '(.*?)'}/",
+					'/{(\$[a-zA-Z0-9_\[\]\']*[+-]*)\}/',
+					'/{\:([^"^\r^}]+)}/'
 			);
 			$replace = array (
 					'<?php echo ${1};?>',
