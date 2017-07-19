@@ -79,7 +79,7 @@ function getConfig($key) {
  * @return array
  */
 function getCarousel() {
-    $row = DB('article')->select(['content' => ['!\\\\[.+\\\\]\\\\(.+\\\\)', 'regexp'], 'type' => 1, '__limit' => '8'])->fetchAll();
+    $row = DB('article')->select(['content' => ['!\\[.+\\]\\(.+\\)', 'regexp'], 'type' => 1, '__limit' => '8'])->fetchAll();
     foreach ($row as $key => $value) {
         $row [$key] ['img'] = getArticleFirstImg($value ['content']);
     }
